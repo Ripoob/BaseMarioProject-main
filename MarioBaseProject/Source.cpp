@@ -9,15 +9,27 @@ using namespace std;
 
 SDL_Window* g_window = nullptr; 
 
+//Functions
 bool InitSDL();
 void CloseSDL();
+bool Update();
+void Render();
+SDL_Texture* LoadTextureFromFile(string path);
+void FreeTexture();
+
+SDL_Renderer* g_renderer = nullptr;
+SDL_Texture* g_texture = nullptr;
 
 int main(int argc, char* args[])
 {
-	fstream inoutFile("content.h");
 	if (InitSDL())
 	{	
-		SDL_Delay(5000);
+		bool quit = false;
+
+		while (!quit)
+		{
+			quit = Update();
+		}
 	}
 
 	CloseSDL();
@@ -48,6 +60,7 @@ bool InitSDL()
 		}
 	}
 }		
+
 void CloseSDL() 
 {
 	SDL_DestroyWindow(g_window);
@@ -55,4 +68,18 @@ void CloseSDL()
 
 	IMG_Quit();
 	SDL_Quit();
+}
+
+bool Update()
+{
+	SDL_Event e;
+	SDL_PollEvent(&e);
+	switch (e.type)
+	{
+	case SDL_QUIT:
+		return true;
+		break;
+	}
+
+	return false;
 }
